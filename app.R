@@ -1,18 +1,7 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
-
 library(shinythemes)
 library(shinydashboard)
-
-
+library(shinycssloaders)
 library(jsonlite)
 library(httr)
 
@@ -59,6 +48,7 @@ returnCurrentRouteFromBusID <- function(bus){
   return (curr)
 }
 
+# Return table of stops for a route
 returnRouteTable <- function(raw_route){
   reactiveRoute <- raw_route
   routeObject <- t(data.frame(t(raw_route)))
@@ -75,7 +65,8 @@ ui <- dashboardPage(
     fluidPage(theme = shinytheme("cerulean"),
       selectInput("bus",h3("Select Bus ID"),returnBuses()),
       h3("Route"),
-      tableOutput("route")
+      h4(textOutput("service")),
+      withSpinner(tableOutput("route"))
     )
   )  
 )
@@ -85,6 +76,10 @@ ui <- dashboardPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   output$route <- renderTable(returnRouteTable(returnCurrentRouteFromBusID(input$bus)),digits=0)
+  
+  output$service <- renderText(
+    paste0("Service: ",toupper(as.character(returnService(input$bus))))
+    )
 }
 
 # Run the application 
