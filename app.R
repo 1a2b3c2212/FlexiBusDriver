@@ -67,19 +67,20 @@ returnRouteTable <- function(raw_route){
   return(routeObject)
 }
 
-ui <- fluidPage(
-  theme = shinytheme("cerulean"),
-  navbarPage("",
-    tabPanel("FlexiBus | Driver", icon = icon("road"),
-      fluidRow(
-        selectInput("bus",h3("Select Bus ID"),returnBuses()),
-        h3("Route"),
-        tableOutput("route")
-      )  
+
+ui <- dashboardPage(
+  dashboardHeader(title = "FlexiBus | Driver"),
+  dashboardSidebar(disable = TRUE),                  
+  dashboardBody(
+    fluidPage(theme = shinytheme("cerulean"),
+      selectInput("bus",h3("Select Bus ID"),returnBuses()),
+      h3("Route"),
+      tableOutput("route")
     )
-    
-  )
+  )  
 )
+  
+  
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
