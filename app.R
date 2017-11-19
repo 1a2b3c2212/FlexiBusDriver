@@ -63,7 +63,7 @@ ui <- dashboardPage(
   dashboardSidebar(disable = TRUE),                  
   dashboardBody(
     fluidPage(theme = shinytheme("cerulean"),
-      selectInput("bus",h3("Select Bus ID"),returnBuses()),
+      selectInput("bus",h3("Select Bus ID"),returnBuses(),selectize = FALSE),
       h3("Route"),
       h4(textOutput("service")),
       withSpinner(tableOutput("route"))
